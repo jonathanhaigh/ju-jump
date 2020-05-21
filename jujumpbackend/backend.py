@@ -35,7 +35,13 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "abbr",
-        type=str
+        type=str,
+    )
+    parser.add_argument(
+        "suffix",
+        nargs="?",
+        default=pathlib.Path("."),
+        type=pathlib.Path,
     )
     return parser.parse_args()
 
@@ -43,7 +49,8 @@ def main():
     args = parse_args()
     specs = AbbrSpecs()
     specs.load_abbrs(pathlib.Path(DEFAULT_ABBR_SPECS_FILE))
-    print(specs[args.abbr].prefix)
+    path = specs[args.abbr].prefix.joinpath(args.suffix).resolve()
+    print(path)
 
 
 if __name__ == "__main__":
